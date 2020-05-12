@@ -13,7 +13,7 @@
     /// <param name="a">доданок</param>
     /// <param name="b">доданок</param>
     /// <returns>сума</returns>
-    public static long Add(long a, long b)
+    public static double Add(double a, double b)
     {
         return a + b;
     }
@@ -24,7 +24,7 @@
     /// <param name="a">зменшуване</param>
     /// <param name="b">від’ємне</param>
     /// <returns>різниця</returns>
-    public static long Sub(long a, long b)
+    public static double Sub(double a, double b)
     {
         return a - b;
     }
@@ -35,7 +35,7 @@
     /// <param name="a">множник</param>
     /// <param name="b">множник</param>
     /// <returns>добуток</returns>
-    public static long Mult(long a, long b)
+    public static double Mult(double a, double b)
     {
         return a * b;
     }
@@ -46,7 +46,7 @@
     /// <param name="a">ділене</param>
     /// <param name="b">дільник</param>
     /// <returns>частка</returns>
-    public static double Div(long a, long b)
+    public static double Div(double a, double b)
     {
         return a / b;
     }
@@ -57,7 +57,7 @@
     /// <param name="a">ділене</param>
     /// <param name="b">дільник</param>
     /// <returns>остача</returns>
-    public static long Mod(long a, long b)
+    public static double Mod(double a, double b)
     {
         return a % b;
     }
@@ -67,7 +67,7 @@
     /// </summary>
     /// <param name="a"></param>
     /// <returns>модуль</returns>
-    public static long ABS(long a)
+    public static double ABS(double a)
     {
         if (a < 0)
             return -a;
@@ -79,7 +79,7 @@
     /// </summary>
     /// <param name="a"></param>
     /// <returns>протилежне значення</returns>
-    public static long IABS(long a)
+    public static double IABS(double a)
     {
         return -a;  
     }

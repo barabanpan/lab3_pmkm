@@ -9,6 +9,9 @@
     <Reference Include="AnalyzerClass">
       <HintPath>..\AnalyzerClass\bin\Debug\AnalyzerClass.dll</HintPath>
     </Reference>
+    <Reference Include="CalcClass">
+      <HintPath>..\CalcClass\obj\Debug\CalcClass.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>
