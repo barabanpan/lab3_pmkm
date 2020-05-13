@@ -4,6 +4,7 @@ using System.Linq;
 using System.Management.Instrumentation;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Windows.Forms;
 
 public class AnalyzerClass
 {
@@ -86,7 +87,7 @@ public class AnalyzerClass
     {
         string newExp = "";
        
-        if (expression.Substring(0,1) == "(")
+        if (expression.Substring(0,1) == "(" || expression.Substring(0,1) == "-")
         {
             newExp = newExp + expression.Substring(0, 1);
         }
@@ -94,7 +95,7 @@ public class AnalyzerClass
         {
             newExp = newExp + expression.Substring(0, 1);
         }
-        else
+        else if (expression.Substring(0, 1) != " ")
         {
             //Невірна синтаксична конструкція вхідного виразу.
             ShowMessage = true;
@@ -108,7 +109,13 @@ public class AnalyzerClass
             {
                 if (Char.IsNumber(expression, i))
                 {
-                    if(newExp.Substring(newExp.Length - 1, 1) == ")")
+                    //Console.WriteLine("i=" + i.ToString());
+                    //Console.WriteLine("newExp[max-1]=" + newExp.Substring(newExp.Length - 1, 1));
+                    //Console.WriteLine("newExp[max-3]=" + newExp.Substring(newExp.Length - 3, 1));
+                    //Console.WriteLine(!Char.IsNumber(newExp, newExp.Length - 1));
+                    //Console.WriteLine(newExp.Substring(newExp.Length - 1, 1) != "-");
+                    //Console.WriteLine(!(newExp.Substring(newExp.Length - 1, 1) == "-" && (i == 1 || (i > 1 && newExp.Substring(newExp.Length - 3, 1) == "("))));
+                    if (newExp.Substring(newExp.Length - 1, 1) == ")")
                     {
                         // Неправильна структура в дужках, помилка на<i> символі.
                         ShowMessage = true;
@@ -117,13 +124,23 @@ public class AnalyzerClass
                     }
                     if (!Char.IsNumber(newExp, newExp.Length - 1))
                     {
-                        newExp = newExp + " ";
+                        
+                        //Console.WriteLine("newExp[max-2]=" + newExp.Substring(newExp.Length - 1, 1));
+                        if (newExp.Substring(newExp.Length - 1, 1) != "-")
+                        {
+                            newExp = newExp + " ";
+                        }
+                        else if (!(newExp.Substring(newExp.Length - 1, 1) == "-" && (i == 1 || (i > 1 && newExp.Substring(newExp.Length - 3, 1) == "("))))
+                        {
+                            newExp = newExp + " ";
+                        }
                     }
+                    
                     newExp = newExp + expression.Substring(i, 1);
                 }
                 else if (expression.Substring(i, 1) == "+" || expression.Substring(i, 1) == "-" || expression.Substring(i, 1) == "/" || expression.Substring(i, 1) == "*" || expression.Substring(i, 1) == "(" || expression.Substring(i, 1) == ")" || expression.Substring(i, 1) == "%")
                 {
-                    if (i > 0 &&  !Char.IsNumber(newExp, newExp.Length - 1) && newExp.Substring(newExp.Length - 1, 1) != ")" && expression.Substring(i, 1) != "(") 
+                    if (i > 0 &&  !Char.IsNumber(newExp, newExp.Length - 1) && newExp.Substring(newExp.Length - 1, 1) != ")" && expression.Substring(i, 1) != "(" && expression.Substring(i, 1) != "-") 
                     {
                         //Два підряд оператори на <i> символі.
                         ShowMessage = true;
@@ -210,7 +227,8 @@ public class AnalyzerClass
                     temp.RemoveAt(temp.Count - 1);
                 }
             }
-            if (Char.IsNumber(expMas[i], 0))
+            int number;
+            if (Int32.TryParse(expMas[i], out number))
             {
                 stack.Add(expMas[i]);
                 if (temp.Count != 0 && (temp[temp.Count - 1].Equals("*") || temp[temp.Count - 1].Equals("/") || temp[temp.Count - 1].Equals("%")))/*temp[temp.Count - 1] == "*" || temp[temp.Count - 1] == "/" || temp[temp.Count - 1] == "%")*/
@@ -247,7 +265,8 @@ public class AnalyzerClass
         ArrayList temp = new ArrayList();
         for(int i = 0; i < stack.Count; i++)
         {
-            if (Char.IsNumber(stack[i].ToString(), 0))
+            int number;
+            if (Int32.TryParse(stack[i].ToString(), out number))
             {
                 if(Convert.ToInt64(stack[i]) < -2147483648 || Convert.ToInt64(stack[i]) > 2147483647)
                 {
