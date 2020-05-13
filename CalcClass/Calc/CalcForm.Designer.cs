@@ -62,6 +62,7 @@
             this.button11 = new System.Windows.Forms.Button();
             this.button12 = new System.Windows.Forms.Button();
             this.button13 = new System.Windows.Forms.Button();
+            this.buttonEscape = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -83,7 +84,6 @@
             this.label1.Size = new System.Drawing.Size(58, 13);
             this.label1.TabIndex = 2;
             this.label1.Text = "Expression";
-            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // groupBox1
             // 
@@ -286,6 +286,7 @@
             // 
             // button0
             // 
+            this.button0.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.button0.Location = new System.Drawing.Point(62, 223);
             this.button0.Name = "button0";
             this.button0.Size = new System.Drawing.Size(39, 28);
@@ -418,11 +419,26 @@
             this.button13.UseVisualStyleBackColor = true;
             this.button13.Click += new System.EventHandler(this.buttonLeftParenthesis_Click);
             // 
+            // buttonEscape
+            // 
+            this.buttonEscape.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.buttonEscape.ForeColor = System.Drawing.Color.Red;
+            this.buttonEscape.Location = new System.Drawing.Point(289, 121);
+            this.buttonEscape.Name = "buttonEscape";
+            this.buttonEscape.Size = new System.Drawing.Size(39, 28);
+            this.buttonEscape.TabIndex = 26;
+            this.buttonEscape.Text = "Esc";
+            this.buttonEscape.UseVisualStyleBackColor = true;
+            this.buttonEscape.Click += new System.EventHandler(this.buttonEscape_Click);
+            // 
             // CalcForm
             // 
+            this.AcceptButton = this.buttonEqual;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(286, 272);
+            this.CancelButton = this.buttonEscape;
+            this.ClientSize = new System.Drawing.Size(283, 266);
+            this.Controls.Add(this.buttonEscape);
             this.Controls.Add(this.textBoxResult);
             this.Controls.Add(this.textBoxExpression);
             this.Controls.Add(this.buttonEqual);
@@ -450,9 +466,9 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.KeyPreview = true;
             this.Name = "CalcForm";
             this.Text = "Calc";
-            this.Load += new System.EventHandler(this.CalcForm_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -496,6 +512,7 @@
         private System.Windows.Forms.Button button11;
         private System.Windows.Forms.Button button12;
         private System.Windows.Forms.Button button13;
+        private System.Windows.Forms.Button buttonEscape;
     }
 }
 

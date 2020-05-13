@@ -18,16 +18,6 @@ namespace Calc
             InitializeComponent();
         }
 
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void CalcForm_Load(object sender, EventArgs e)
-        {
-
-        }
-
         private void buttonLeftParenthesis_Click(object sender, EventArgs e)
         {
             textBoxExpression.Text = textBoxExpression.Text + "(";
@@ -161,16 +151,10 @@ namespace Calc
         {
             textBoxExpression.Text = textBoxExpression.Text + tempNumber.ToString();
         }
-
-        private void buttonEqual_KeyDown(object sender, KeyEventArgs e)
-        {
-            //if (e.KeyCode == Keys.Enter)
-            //{
-            //    MessageBox.Show("Enter key pressed");
-            //}
-
-        }
-
         
+        private void buttonEscape_Click(object sender, EventArgs e)
+        {
+            CalcForm.ActiveForm.Close();
+        }
     }
 }
