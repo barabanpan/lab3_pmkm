@@ -24,7 +24,7 @@ public class AnalyzerClass
     /// Показує, чи є необхідність у виведенні повідомлень про помилки.
     /// У разі консольного запуску програми це значення - false.
     /// </summary>
-    public static bool ShowMessage = true;
+    public static bool ShowMessage = false;
     /// <summary>
     /// Останнє повідомлення про помилку.
     /// Поле і властивість для нього
@@ -41,19 +41,24 @@ public class AnalyzerClass
     /// якій виникла помилка.
     public static bool CheckCurrency()
     {
+        if (expression.Length > 65536)
+        {
+            //Дуже довгий вираз. Максмальная довжина — 65536 символів.
+            ShowMessage = true;
+            lastError = "Error 07";
+            return false;
+        }
         int p = 0, k = 0;
         for(int i = 0; i < expression.Length; i++)
         {
             if (expression.Substring(i, 1) == "(")
             {
-                //if(i > 1 && i < expression.Length -1 && !Char.IsNumber(expression, i-1) && expression.Substring(i-1, 1) != " " && !Char.IsNumber(expression, i + 1) && expression.Substring(i + 1, 1) != " ")
-                //{
-                //    p = 1;
-                //    k = i;
-                //    break;
-                //}
                 p++;
                 k = i;
+                if(p > 4)
+                {
+                    break;
+                }
             }
             else if (expression.Substring(i, 1) == ")")
             {
@@ -62,6 +67,8 @@ public class AnalyzerClass
         }
         if (p != 0)
         {
+            //Неправильна структура в дужках, помилка на <i> символі.
+            ShowMessage = true;
             lastError = "Error 01 at " + (k + 1).ToString();
             erposition = k;
             return false;
@@ -89,7 +96,10 @@ public class AnalyzerClass
         }
         else
         {
-            return "Помилка початку виразу";
+            //Невірна синтаксична конструкція вхідного виразу.
+            ShowMessage = true;
+            lastError = "Error 03";
+            return "Error 03";
         }
         for (int i = 1; i < expression.Length; i++)
         {
@@ -98,7 +108,14 @@ public class AnalyzerClass
             {
                 if (Char.IsNumber(expression, i))
                 {
-                    if (!Char.IsNumber(expression, i - 1))
+                    if(newExp.Substring(newExp.Length - 1, 1) == ")")
+                    {
+                        // Неправильна структура в дужках, помилка на<i> символі.
+                        ShowMessage = true;
+                        lastError = "Error 01 at " + (i + 1).ToString();
+                        return "Error 01 at " + (i + 1).ToString();
+                    }
+                    if (!Char.IsNumber(newExp, newExp.Length - 1))
                     {
                         newExp = newExp + " ";
                     }
@@ -106,18 +123,27 @@ public class AnalyzerClass
                 }
                 else if (expression.Substring(i, 1) == "+" || expression.Substring(i, 1) == "-" || expression.Substring(i, 1) == "/" || expression.Substring(i, 1) == "*" || expression.Substring(i, 1) == "(" || expression.Substring(i, 1) == ")" || expression.Substring(i, 1) == "%")
                 {
-                    if (i > 3 && newExp.Substring(i - 1, 1) == " " && (newExp.Substring(i - 1, 1) == "+" || newExp.Substring(i - 1, 1) == "-" || newExp.Substring(i - 1, 1) == "/" || newExp.Substring(i - 1, 1) == "*" || expression.Substring(i - 1, 1) == "%"))
+                    if (i > 0 &&  !Char.IsNumber(newExp, newExp.Length - 1) && newExp.Substring(newExp.Length - 1, 1) != ")" && expression.Substring(i, 1) != "(") 
                     {
                         //Два підряд оператори на <i> символі.
+                        ShowMessage = true;
                         lastError = "Error 04 at " + (i + 1).ToString();
                         erposition = i;
                         return "Error 04 at " + (i + 1).ToString();
+                    }
+                    if (i > 0 && expression.Substring(i, 1) == "(" && Char.IsNumber(newExp, newExp.Length - 1))
+                    {
+                        //Неправильна структура в дужках, помилка на <i> символі.
+                        ShowMessage = true;
+                        lastError = "Error 01 at " + (i + 1).ToString();
+                        return "Error 01 at " + (i + 1).ToString();
                     }
                     newExp = newExp + " " + expression.Substring(i, 1);
                 }
                 else
                 {
                     //Невідомий оператор на <i> символі.
+                    ShowMessage = true;
                     lastError = "Error 02 at " + (i + 1).ToString();
                     erposition = i;
                     return "Error 02 at " + (i + 1).ToString();
@@ -127,6 +153,7 @@ public class AnalyzerClass
         if (!Char.IsNumber(expression, expression.Length - 1) && expression.Substring(expression.Length - 1, 1) != " " && expression.Substring(expression.Length - 1, 1) !=")")
         {
             //Незавершений вираз
+            ShowMessage = true;
             lastError = "Error 05";
             return "Error 05";
         }
@@ -222,6 +249,13 @@ public class AnalyzerClass
         {
             if (Char.IsNumber(stack[i].ToString(), 0))
             {
+                if(Convert.ToInt64(stack[i]) < -2147483648 || Convert.ToInt64(stack[i]) > 2147483647)
+                {
+                    //Дуже мале, або дуже велике значення числа для int. Числа повинні бути в межах від -2147483648 до 2147483647
+                    ShowMessage = true;
+                    lastError = "Error 06";
+                    return "Error 06";
+                }
                 temp.Add(stack[i]);
             }
             else
@@ -242,9 +276,21 @@ public class AnalyzerClass
                         temp.Add(CalcClass.Mult(left, right).ToString());
                         break;
                     case "/":
+                        if (right == 0)
+                        {
+                            ShowMessage = true;
+                            lastError = "Error 09";
+                            return "Error 09";
+                        }
                         temp.Add(CalcClass.Div(left, right).ToString());
                         break;
                     case "%":
+                        if (right == 0)
+                        {
+                            ShowMessage = true;
+                            lastError = "Error 09";
+                            return "Error 09";
+                        }
                         temp.Add(CalcClass.Mod(left, right).ToString());
                         break;
 
@@ -252,6 +298,7 @@ public class AnalyzerClass
             }
             
         }
+        expression = temp[0].ToString();
         return temp[0].ToString();
     }
     
@@ -262,11 +309,29 @@ public class AnalyzerClass
     /// <returns></returns>
     public static string Estimate(string exp)
     {
+        ShowMessage = false;
+        lastError = "";
+        erposition = 0;
         expression = exp;
-        CheckCurrency();
-        //Console.WriteLine(expression);
-        Console.WriteLine(Format());
+        if (!CheckCurrency())
+        {
+            return lastError;
+        }
+        //Console.WriteLine(Char.IsNumber(Format(), 0));
+        Format();
+        if (ShowMessage)
+        {
+            return lastError;
+        }
+        Console.Write(expression + " = ");
         string[] expMas = expression.Split(' ');
+        if (expMas.Length > 30)
+        {
+            //Сумарна кількість чисел і операторів перевищує 30.
+            ShowMessage = true;
+            lastError = "Error 08";
+            return "Error 08";
+        }
         ArrayList stack = new ArrayList();
         stack = CreateStack(stack, expMas);
         //for (int i = 0; i < stack.Count; i++)
@@ -274,7 +339,11 @@ public class AnalyzerClass
         //    Console.WriteLine(stack[i]);
 
         //}
-        Console.WriteLine(RunEstimate(stack));
+        RunEstimate(stack);
+        if (ShowMessage)
+        {
+            return lastError;
+        }
         return expression;
     }
 }

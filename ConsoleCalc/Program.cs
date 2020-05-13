@@ -7,17 +7,17 @@ namespace ConsoleCalc
     {
         static void Main(string[] args)
         {
-            string expression = "23 + 96 7 *7";
-            //string n = expression.Substring(3, 1);
-            //string n1 = "+";
-            //if (expression.Substring(3, 1) == "+")
-            //{
-            //    Console.WriteLine("Uviii");
-            //}
-
-            AnalyzerClass.Estimate("(2+1)*6");
-            
-
+            Console.WriteLine("Enter 0 - exit");
+            string expression = "1";
+            while (expression != "0")
+            {
+                Console.Write("Enter expression: ");
+                expression = Console.ReadLine();
+                if(expression != "0")
+                {
+                    Console.WriteLine(AnalyzerClass.Estimate(expression));
+                }
+            }
         }
     }
 }
