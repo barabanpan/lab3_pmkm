@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnalyzerClass", "..\Analyze
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Calc", "Calc\Calc.csproj", "{1FEDD7AF-E765-4A7B-931F-05A229344564}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "calc_", "..\calc_\calc_.csproj", "{3F00A220-BDCC-4011-AB5F-3054B66652A7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "calc_", "..\calc_\calc_.csproj", "{114CC934-427A-45AA-BBA7-672E40214488}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,10 +29,10 @@ Global
 		{1FEDD7AF-E765-4A7B-931F-05A229344564}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1FEDD7AF-E765-4A7B-931F-05A229344564}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1FEDD7AF-E765-4A7B-931F-05A229344564}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3F00A220-BDCC-4011-AB5F-3054B66652A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3F00A220-BDCC-4011-AB5F-3054B66652A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3F00A220-BDCC-4011-AB5F-3054B66652A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3F00A220-BDCC-4011-AB5F-3054B66652A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{114CC934-427A-45AA-BBA7-672E40214488}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{114CC934-427A-45AA-BBA7-672E40214488}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{114CC934-427A-45AA-BBA7-672E40214488}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{114CC934-427A-45AA-BBA7-672E40214488}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
