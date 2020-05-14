@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -63,6 +64,7 @@
             this.button12 = new System.Windows.Forms.Button();
             this.button13 = new System.Windows.Forms.Button();
             this.buttonEscape = new System.Windows.Forms.Button();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -303,6 +305,8 @@
             this.buttonUnary.TabIndex = 16;
             this.buttonUnary.Text = "+/-";
             this.buttonUnary.UseVisualStyleBackColor = true;
+            this.buttonUnary.MouseDown += new System.Windows.Forms.MouseEventHandler(this.buttonUnary_MouseDown);
+            this.buttonUnary.MouseUp += new System.Windows.Forms.MouseEventHandler(this.buttonUnary_MouseUp);
             // 
             // buttonEqual
             // 
@@ -431,6 +435,10 @@
             this.buttonEscape.UseVisualStyleBackColor = true;
             this.buttonEscape.Click += new System.EventHandler(this.buttonEscape_Click);
             // 
+            // timer1
+            // 
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
             // CalcForm
             // 
             this.AcceptButton = this.buttonEqual;
@@ -513,6 +521,7 @@
         private System.Windows.Forms.Button button12;
         private System.Windows.Forms.Button button13;
         private System.Windows.Forms.Button buttonEscape;
+        private System.Windows.Forms.Timer timer1;
     }
 }
 

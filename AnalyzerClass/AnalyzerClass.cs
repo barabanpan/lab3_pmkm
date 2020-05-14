@@ -63,6 +63,13 @@ public class AnalyzerClass
             }
             else if (expression.Substring(i, 1) == ")")
             {
+                if(p == 0)
+                {
+                    ShowMessage = true;
+                    lastError = "Error 01 at " + (i + 1).ToString();
+                    erposition = i;
+                    return false;
+                }
                 p--;
             }
         }
@@ -173,6 +180,10 @@ public class AnalyzerClass
             ShowMessage = true;
             lastError = "Error 05";
             return "Error 05";
+        }
+        if(newExp.Substring(0,1) == "-" && newExp.Substring(2,1) == "(")
+        {
+            newExp = "0 " + newExp;
         }
         expression = newExp;
         return newExp;

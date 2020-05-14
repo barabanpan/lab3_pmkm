@@ -12,6 +12,9 @@ namespace Calc
 {
     public partial class CalcForm : Form
     {
+        static int alarmCounter = 0;
+        static bool timerStart = false;
+
         private double tempNumber = 0;
         public CalcForm()
         {
@@ -155,6 +158,99 @@ namespace Calc
         private void buttonEscape_Click(object sender, EventArgs e)
         {
             CalcForm.ActiveForm.Close();
+        }
+
+       
+
+        private void buttonUnary_MouseDown(object sender, MouseEventArgs e)
+        {
+            timerStart = true;
+            timer1 = new System.Windows.Forms.Timer();
+            timer1.Tick += new EventHandler(timer1_Tick);
+            timer1.Interval = 1000; // 1 second
+            timer1.Start();
+        }
+
+        private void buttonUnary_MouseUp(object sender, MouseEventArgs e)
+        {
+            timerStart = false;
+            timer1.Stop();
+            if (alarmCounter < 3)
+            {
+                //MessageBox.Show("timer > 3= " + alarmCounter.ToString());
+                if (textBoxExpression.Text != "")
+                {
+                    string exp = textBoxExpression.Text;
+                    if(exp.Substring(exp.Length-1,1) == "-")
+                    {
+                        textBoxExpression.Text = exp.Substring(0, exp.Length - 1) + "+";
+                    }
+                    else if (exp.Substring(exp.Length-1, 1) == "+")
+                    {
+                        textBoxExpression.Text = exp.Substring(0, exp.Length - 1) + "-";
+                    }
+                    else if (exp.Substring(exp.Length-1, 1) == "*" || exp.Substring(exp.Length-1, 1) == "/" || exp.Substring(exp.Length-1, 1) == "%")
+                    {
+                        textBoxExpression.Text = exp + "(-";
+                    }
+                    else if(exp.Substring(exp.Length - 1, 1) == ")")
+                    {
+                        textBoxExpression.Text = exp + "-";
+                    }
+                    else
+                    {
+                        for (int i = exp.Length - 1; i >= 0; i--)
+                        {
+                            
+                            if (!Char.IsNumber(exp, i))
+                            {
+                                if (exp.Substring(i, 1) == "-")
+                                {
+                                    textBoxExpression.Text = exp.Substring(0, i) + "+" + exp.Substring(i+1,exp.Length-i-1);
+                                }
+                                else if (exp.Substring(i, 1) == "+")
+                                {
+                                    textBoxExpression.Text = exp.Substring(0, i) + "-" + exp.Substring(i + 1, exp.Length - i - 1);
+                                }
+                                else if (exp.Substring(i, 1) == "*" || exp.Substring(i, 1) == "/" || exp.Substring(i, 1) == "%")
+                                {
+                                    textBoxExpression.Text = exp.Substring(0, i+1) + "(-"+ exp.Substring(i + 1, exp.Length - i - 1);
+                                }
+                               
+                                break;
+                            }
+                        }
+                    }
+
+                }
+            }
+            else
+            {
+                if (textBoxExpression.Text != "")
+                {
+                    string exp = textBoxExpression.Text;
+                    if (exp.Length >= 2)
+                    {
+                        if (exp.Substring(0, 1) == "-" && exp.Substring(1, 1) == "(" && exp.Substring(exp.Length - 1, 1) == ")")
+                        {
+                            textBoxExpression.Text = exp.Substring(2, exp.Length - 3);
+                        }
+                        else
+                        {
+                            textBoxExpression.Text = "-(" + exp + ")";
+                        }
+                    }
+                    else
+                    {
+                        textBoxExpression.Text = "-" + exp;
+                    }
+                }
+            }
+            alarmCounter = 0;  
+        }
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            alarmCounter++;
         }
     }
 }
